@@ -26,11 +26,11 @@ in  let ghc = { name = "ghc", mixin = [] : List Text }
                 //  { library =
                       { source-dirs = "src"
                       , dependencies =
-                        [ "base >=4.8 && <5", "ghc >=7.10 && <9.13" ]
+                        [ "base >=4.8 && <5", "ghc >=7.10 && <9.17" ]
                       , exposed-modules = "GHC.TcPluginM.Extra"
                       , other-modules = "Internal"
                       , when =
-                        [ version "9.11" "9.13" [ "tree-9.4", "9.12" ] ghc mods
+                        [ version "9.11" "9.17" [ "tree-9.4", "9.12" ] ghc mods
                         , version "9.10" "9.11" [ "tree-9.4", "9.10" ] ghc mods
                         , version "9.8" "9.10" [ "tree-9.4", "9.8" ] ghc mods
                         , version "9.4" "9.8" [ "tree-9.4", "9.4" ] ghc mods
