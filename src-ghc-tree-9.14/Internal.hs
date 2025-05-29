@@ -23,7 +23,6 @@ module Internal
   )
 where
 
-import GHC.Driver.Config.Finder (initFinderOpts)
 import GHC.Tc.Plugin (TcPluginM, lookupOrig, tcPluginTrace)
 import qualified GHC.Tc.Plugin as TcPlugin
   (newWanted, getTopEnv, tcPluginIO, findImportedModule)
@@ -48,13 +47,8 @@ lookupModule :: ModuleName -- ^ Name of the module
              -> TcPluginM Module
 lookupModule mod_nm _pkg = do
   hsc_env <- TcPlugin.getTopEnv
-  let fc         = hsc_FC hsc_env
-      dflags     = hsc_dflags hsc_env
-      fopts      = initFinderOpts dflags
-      units      = hsc_units hsc_env
-      mhome_unit = hsc_home_unit_maybe hsc_env
-  found_module <- TcPlugin.tcPluginIO $ findPluginModule fc fopts units
-                                          mhome_unit mod_nm
+  let mhome_unit = hsc_home_unit_maybe hsc_env
+  found_module <- TcPlugin.tcPluginIO $ findPluginModule hsc_env mod_nm
   case found_module of
     Found _ h -> return h
     _ -> do
