@@ -48,7 +48,9 @@ lookupModule :: ModuleName -- ^ Name of the module
 lookupModule mod_nm _pkg = do
   hsc_env <- TcPlugin.getTopEnv
   let mhome_unit = hsc_home_unit_maybe hsc_env
-  found_module <- TcPlugin.tcPluginIO $ findPluginModule hsc_env mod_nm
+  found_module <- TcPlugin.tcPluginIO $ do
+    query <- hscUnitIndexQuery hsc_env
+    findPluginModule hsc_env query mod_nm
   case found_module of
     Found _ h -> return h
     _ -> do
